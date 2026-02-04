@@ -36,15 +36,16 @@ def run_single_simulation(
     #reset_global_state(model_seed)
 
     # --- set exogenous parameters ---
-    ExogenousFactors.firmSizeSeed = firm_seed
-    ExogenousFactors.modelSeed = model_seed
     ExogenousFactors.isCapitalRequirementActive = True
-    ExogenousFactors.minimumCapitalAdequacyRatio = 0.06
+    ExogenousFactors.minimumCapitalAdequacyRatio = 0.1
 
     print(f"[PID {os.getpid()}] Run {run_id} START", flush=True)
 
     # --- run model ---
-    model = MyModel()
+    model = MyModel(firm_seed = firm_seed, model_seed = model_seed)
+    
+    np.random.seed()
+    
     model.run_model(max_steps)
 
     # --- save outputs (same format as before) ---
@@ -76,7 +77,7 @@ if __name__ == "__main__":
     # --- import ONLY here ---
     from model import ExogenousFactors
 
-    OUTPUT_DIR = "prudential_6"
+    OUTPUT_DIR = "prudential_10"
     MAX_STEPS = 10000
     N_SIMULATIONS = 20
     N_JOBS = 5        # change to 1 for debugging
