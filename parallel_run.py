@@ -19,6 +19,7 @@ def run_single_simulation(
     run_id,
     firm_seed,
     model_seed,
+    capital_requirement,
     max_steps,
     output_dir
 ):
@@ -29,6 +30,7 @@ def run_single_simulation(
 
     # --- imports INSIDE function (Windows spawn-safe) ---
     from model import MyModel, ExogenousFactors
+    import numpy as np
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -36,15 +38,19 @@ def run_single_simulation(
     #reset_global_state(model_seed)
 
     # --- set exogenous parameters ---
-    ExogenousFactors.isCapitalRequirementActive = True
-    ExogenousFactors.minimumCapitalAdequacyRatio = 0.1
+    #ExogenousFactors.isCapitalRequirementActive = False
+    #ExogenousFactors.DefaultEWADampingFactor = 0.9
+    #ExogenousFactors.minimumCapitalAdequacyRatio = 0.08
+    #ExogenousFactors.beta0FirmTypeModel = -1.3
+    #ExogenousFactors.beta2FirmTypeModel = -1.1
 
     print(f"[PID {os.getpid()}] Run {run_id} START", flush=True)
 
     # --- run model ---
-    model = MyModel(firm_seed = firm_seed, model_seed = model_seed)
+    model = MyModel(firm_seed = firm_seed, model_seed = model_seed,
+                    capital_requirement = capital_requirement)
     
-    np.random.seed()
+    #np.random.seed()
     
     model.run_model(max_steps)
 
@@ -84,6 +90,7 @@ if __name__ == "__main__":
 
     base_firm_seed = ExogenousFactors.firmSizeSeed
     base_model_seed = ExogenousFactors.modelSeed
+    capital_requirement = True
 
     print(
         f"Starting {N_SIMULATIONS} simulations "
@@ -100,6 +107,7 @@ if __name__ == "__main__":
             run_id=i,
             firm_seed=base_firm_seed + i * 4,
             model_seed=base_model_seed + i,
+            capital_requirement = capital_requirement,
             max_steps=MAX_STEPS,
             output_dir=OUTPUT_DIR
         )
