@@ -63,12 +63,12 @@ def run_single_simulation(
         index=False
     )
 
-    model.datacollector.get_agent_vars_dataframe().to_csv(
-        f"{output_dir}/output_agents_{run_id}.csv",
-        sep=";",
-        decimal=".",
-        index=False
-    )
+    # model.datacollector.get_agent_vars_dataframe().to_csv(
+    #     f"{output_dir}/output_agents_{run_id}.csv",
+    #     sep=";",
+    #     decimal=".",
+    #     index=False
+    # )
 
     print(f"[PID {os.getpid()}] Run {run_id} END", flush=True)
 
