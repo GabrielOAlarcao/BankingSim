@@ -15,7 +15,7 @@ from util import Util
 class Bank(Agent):
 
     def __init__(self, bank_size_distribution, is_intelligent, ewa_damping_factor, 
-                 firm_type_model, model, bank_id):
+                 lambda_factor, firm_type_model, model, bank_id):
         super().__init__(Util.get_unique_id(), model)
 
         self.initialSize = 1 if bank_size_distribution != BankSizeDistribution.LogNormal \
@@ -47,6 +47,7 @@ class Bank(Agent):
             self.currentlyChosenStrategy = None
             self.currentlyChosenStrategyId = None
             self.EWADampingFactor = ewa_damping_factor
+            self.LambdaFactor = lambda_factor
             
         # Risk Model part
         self.firmTypeModel = firm_type_model
@@ -59,7 +60,7 @@ class Bank(Agent):
             #if p > .9:
             #    print(p)
              #   print(m,np.max(self.strategyProfitPercentageDamped))
-            self.P = np.exp(self.A) / (np.sum(np.exp(self.A)))
+            self.P = np.exp(self.A * self.LambdaFactor) / (np.sum(np.exp(self.A * self.LambdaFactor)))
 
             if m > 1000:
                 self.limit_array()
@@ -74,7 +75,7 @@ class Bank(Agent):
         m = np.max(self.A)
         new = self.A + 100 - m
         self.A = new
-        self.P = np.exp(self.A) / (np.sum(np.exp(self.A)))
+        self.P = np.exp(self.A * self.LambdaFactor) / (np.sum(np.exp(self.A * self.LambdaFactor)))
 
         # print('Rolor',m)
 
@@ -93,7 +94,7 @@ class Bank(Agent):
             print(np.sum(tmp), 'cool')
             # self.P = tmp / np.sum(tmp)
             self.A = tmp
-            self.P = np.exp(tmp) / (np.sum(np.exp(tmp)))
+            self.P = np.exp(tmp * self.LambdaFactor) / (np.sum(np.exp(tmp * self.LambdaFactor)))
             print(self.P)
             _id = choice(self.StrategiesId, p=self.P)
         self.currentlyChosenStrategyId = _id

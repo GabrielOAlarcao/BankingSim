@@ -85,6 +85,7 @@ class BankingModel(Model):
         _params = (ExogenousFactors.bankSizeDistribution,
                    not ExogenousFactors.areBanksZeroIntelligenceAgents,
                    ExogenousFactors.DefaultEWADampingFactor,
+                   ExogenousFactors.LambdaFactor,
                    self.firmTypeModel)
         for _ in range(self.numberBanks):
             bank = Bank(*_params, self, _)

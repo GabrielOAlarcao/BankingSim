@@ -43,6 +43,7 @@ def run_single_simulation(
     #ExogenousFactors.minimumCapitalAdequacyRatio = 0.08
     #ExogenousFactors.beta0FirmTypeModel = -1.3
     #ExogenousFactors.beta2FirmTypeModel = -1.1
+    ExogenousFactors.LambdaFactor = 0.9
 
     print(f"[PID {os.getpid()}] Run {run_id} START", flush=True)
 
@@ -83,14 +84,14 @@ if __name__ == "__main__":
     # --- import ONLY here ---
     from model import ExogenousFactors
 
-    OUTPUT_DIR = "prudential_10"
+    OUTPUT_DIR = "baseline_lambda_09"
     MAX_STEPS = 10000
     N_SIMULATIONS = 20
     N_JOBS = 5        # change to 1 for debugging
 
     base_firm_seed = ExogenousFactors.firmSizeSeed
     base_model_seed = ExogenousFactors.modelSeed
-    capital_requirement = True
+    capital_requirement = False
 
     print(
         f"Starting {N_SIMULATIONS} simulations "

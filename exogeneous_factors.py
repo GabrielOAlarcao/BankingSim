@@ -107,6 +107,7 @@ class ExogenousFactors:
 
     # Learning
     DefaultEWADampingFactor = 1
+    LambdaFactor = 1
     
     # Distribution
     firmSizeSeed = 20
